@@ -3,9 +3,9 @@
   "short_name": "Tasks",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f7f6f2",
-  "theme_color": "#f7f6f2",
-  "description": "A calm, simple place to capture what you need and want to do.",
+  "background_color": "#fff4f7",
+  "theme_color": "#fff4f7",
+  "description": "A cute little pink space to capture what you need and want to do.",
   "icons": [
     {
       "src": "icon-192.png",

@@ -1,23 +1,17 @@
-POCKET TASKS — iPhone PWA
+POCKET TASKS — PINK EDITION
 
-WHAT'S INCLUDED
-- Two task lists: Must do and Want to do
-- Quick capture (adds to the currently selected list)
-- Editable task details: category, priority and optional due date
-- Category filters and custom category management
-- Complete, restore, edit and delete tasks
-- Completed view
-- JSON export/import backup
-- Offline app shell after first load
+This is a small installable web app for iPhone. It stores tasks locally in the browser on your device.
 
-IMPORTANT DATA NOTE
-This first version stores tasks in the browser on the device. It does not sync between devices or create a cloud backup. Use Backup > Export backup regularly. Clearing Safari website data may erase locally stored tasks.
+PUBLISHING / UPDATING ON GITHUB PAGES
+1. Extract this ZIP.
+2. Open your existing pocket-tasks repository on GitHub.
+3. Choose Add file > Upload files.
+4. Upload and replace the files in the repository root with these updated files. Make sure index.html, manifest.webmanifest, sw.js and both icon files are at the root (not inside another folder).
+5. Commit the changes. GitHub Pages will publish the update.
+6. Open your existing GitHub Pages address. If the old design remains, close the app completely, open the site in Safari, refresh, and then reopen the Home Screen app. The service worker cache has been versioned to refresh the app shell.
 
-PUBLISH IT
-A PWA must be served from an HTTPS website before iPhone can install it to the Home Screen. This folder is a ready-to-host static site:
-1. Upload the contents of this folder to a static host that gives you an HTTPS URL (for example, Netlify Drop or GitHub Pages).
-2. Open the published HTTPS URL in Safari on your iPhone.
-3. Tap Share > Add to Home Screen. If shown, enable "Open as Web App", then tap Add.
-4. Launch Pocket Tasks from the new Home Screen icon.
+INSTALLING ON IPHONE
+Open the HTTPS GitHub Pages address in Safari > Share > Add to Home Screen. Enable Open as Web App if offered.
 
-For a private personal app, use a hosting account you control. Do not publish sensitive information in the app; this version has no account login or server-side access controls.
+DATA
+Tasks are stored in localStorage on this device/browser. This update keeps the same storage key, so existing tasks should remain on the device. Export a backup before making changes as a precaution. Clearing Safari website data may erase tasks. This app does not sync between devices.

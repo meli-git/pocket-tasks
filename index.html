@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f7f6f2">
+  <meta name="theme-color" content="#fff3f7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Pocket Tasks">
@@ -12,12 +12,12 @@
   <link rel="apple-touch-icon" href="icon-192.png">
   <title>Pocket Tasks</title>
   <style>
-    :root{--bg:#f7f6f2;--paper:#fff;--ink:#242720;--muted:#777b70;--line:#e9e8e1;--green:#466b57;--green-soft:#e8f0e9;--red:#a35e55;--red-soft:#f6eae7;--gold:#9b783e;--gold-soft:#f5efdf;--shadow:0 8px 24px rgba(35,39,32,.06)}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px}
+    :root{--bg:#fff4f7;--paper:#fff;--ink:#35252d;--muted:#927d86;--line:#f1dfe6;--green:#a34f70;--green-soft:#f9e5ed;--red:#c45e78;--red-soft:#fde8ee;--gold:#aa7a42;--gold-soft:#fbf0df;--shadow:0 8px 24px rgba(132,65,91,.08)}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 92% 8%,rgba(255,211,226,.35),transparent 22%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px}
     button,input,select{font:inherit} button{cursor:pointer}
     .app{max-width:720px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top)) 18px calc(92px + env(safe-area-inset-bottom))}
     header{display:flex;justify-content:space-between;align-items:center;margin:8px 0 24px}
-    .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+    .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}.eyebrow:after{content:"  ✦";color:#e49ab5;font-size:15px}.app:before{content:"✧";position:fixed;top:145px;right:22px;color:#e7a8bf;font-size:22px;pointer-events:none;opacity:.75}.app:after{content:"✦";position:fixed;top:310px;left:12px;color:#efc0d0;font-size:15px;pointer-events:none;opacity:.8}
     h1{font-size:29px;letter-spacing:-.04em;margin:5px 0 0;font-weight:750}
     .date{font-size:13px;color:var(--muted);text-align:right}
     .summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
@@ -25,21 +25,21 @@
     .summary-card span{display:block;color:var(--muted);font-size:13px;margin-bottom:7px}
     .summary-card strong{font-size:28px;letter-spacing:-.04em}
     .summary-card.must strong{color:var(--red)}.summary-card.want strong{color:var(--green)}
-    .capture{display:flex;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:8px 8px 8px 15px;margin-bottom:22px;box-shadow:var(--shadow)}
+    .capture{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:8px 8px 8px 15px;margin-bottom:22px;box-shadow:var(--shadow);min-height:66px}
     .capture input{border:0;outline:0;min-width:0;flex:1;background:transparent;font-size:16px}
-    .capture button,.primary{border:0;background:var(--ink);color:white;border-radius:12px;padding:11px 17px;font-weight:650}
+    .capture button,.primary{border:0;background:#b85f82;color:white;border-radius:12px;padding:11px 17px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;min-height:44px;line-height:1.1;flex-shrink:0}
     .tabs{display:flex;background:#eeede7;border-radius:14px;padding:4px;gap:4px;margin-bottom:16px}
     .tab{flex:1;border:0;background:transparent;border-radius:11px;padding:12px 8px;color:var(--muted);font-weight:650}
-    .tab[aria-selected=true]{background:white;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .tab[aria-selected=true]{background:white;color:var(--ink);box-shadow:0 2px 8px rgba(132,65,91,.08)}
     .section-head{display:flex;justify-content:space-between;align-items:center;margin:18px 0 12px}
     h2{font-size:20px;letter-spacing:-.03em;margin:0}
     .count{font-size:13px;color:var(--muted)}
     .filters{display:flex;gap:8px;overflow-x:auto;padding:1px 0 12px;scrollbar-width:none}
     .filters::-webkit-scrollbar{display:none}
     .chip{white-space:nowrap;border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:99px;padding:8px 12px;font-size:13px}
-    .chip.active{background:var(--green-soft);border-color:#cbd9ce;color:var(--green);font-weight:650}
+    .chip.active{background:var(--green-soft);border-color:#edc3d2;color:var(--green);font-weight:650}
     .task-list{display:grid;gap:9px}
-    .task{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:13px;display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:start;box-shadow:0 3px 12px rgba(35,39,32,.035)}
+    .task{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:13px;display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:start;box-shadow:0 3px 12px rgba(132,65,91,.045);position:relative}
     .check{width:22px;height:22px;border:1.5px solid #c9c9bf;border-radius:50%;background:white;margin-top:2px;display:grid;place-items:center;color:white;padding:0}
     .check.done{background:var(--green);border-color:var(--green)}
     .task-title{font-weight:620;line-height:1.35;overflow-wrap:anywhere}
@@ -47,22 +47,22 @@
     .tag{font-size:11px;border-radius:99px;padding:4px 8px;background:#f1f0eb;color:#686b61}
     .tag.high{background:var(--red-soft);color:var(--red)}.tag.medium{background:var(--gold-soft);color:var(--gold)}.tag.low{background:#edf0f1;color:#65747a}
     .due{font-size:11px;color:var(--muted)}.due.overdue{color:var(--red);font-weight:650}
-    .task-actions{display:flex;gap:2px}
+    .task-actions{display:flex;gap:2px;position:relative}.task-menu{position:absolute;z-index:8;right:0;top:34px;min-width:132px;padding:5px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 28px rgba(92,45,64,.16)}.task-menu button{display:block;width:100%;border:0;background:transparent;text-align:left;padding:10px 12px;border-radius:8px;color:var(--ink);font-size:14px}.task-menu button:active{background:var(--green-soft)}.task-menu button.delete{color:#c34f70}
     .icon-btn{border:0;background:transparent;color:#8b8d84;font-size:18px;padding:4px 6px;border-radius:8px;min-width:32px;min-height:32px}
     .icon-btn:active{background:#f1f0eb}
     .empty{padding:30px 18px;text-align:center;border:1px dashed #d8d7cf;border-radius:16px;color:var(--muted);line-height:1.5}
     .empty strong{display:block;color:var(--ink);margin-bottom:5px}
-    .bottom{position:fixed;z-index:5;bottom:0;left:0;right:0;padding:10px 18px calc(10px + env(safe-area-inset-bottom));background:rgba(247,246,242,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
-    .bottom-inner{max-width:680px;margin:auto;display:flex;justify-content:space-around;align-items:center}
-    .nav{border:0;background:transparent;color:var(--muted);padding:7px 14px;border-radius:12px;font-size:12px;display:grid;gap:3px;justify-items:center}
+    .bottom{position:fixed;z-index:5;bottom:0;left:0;right:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(255,244,247,.95);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+    .bottom-inner{max-width:680px;margin:auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;justify-items:center;gap:2px}
+    .nav{border:0;background:transparent;color:var(--muted);padding:7px 3px;border-radius:12px;font-size:12px;display:grid;gap:3px;justify-items:center;width:100%;min-width:0}
     .nav b{font-size:19px;font-weight:500}.nav.active{color:var(--green);background:var(--green-soft);font-weight:700}
-    .add-fab{border:0;background:var(--ink);color:white;border-radius:50%;width:50px;height:50px;font-size:28px;line-height:1;box-shadow:var(--shadow);margin-top:-23px}
+    .add-fab{border:0;background:#35252d;color:white;border-radius:50%;width:54px;height:54px;font-size:29px;line-height:1;display:grid;place-items:center;padding:0;justify-self:center;align-self:center;box-shadow:0 7px 18px rgba(132,65,91,.2);margin-top:-22px}
     dialog{border:0;border-radius:22px;padding:0;width:min(92vw,480px);max-height:88vh;box-shadow:0 20px 70px rgba(0,0,0,.22);color:var(--ink)}
     dialog::backdrop{background:rgba(26,29,25,.35);backdrop-filter:blur(3px)}
     .modal{padding:22px;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal h2{font-size:22px}
     .field{display:grid;gap:7px;margin:14px 0}.field label{font-size:13px;font-weight:650;color:#5e6258}
     .field input,.field select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fbfbf9;color:var(--ink);min-height:46px}
-    .seg{display:grid;grid-template-columns:1fr 1fr;gap:7px}.seg button{border:1px solid var(--line);background:white;border-radius:12px;padding:12px;color:var(--muted);font-weight:650}.seg button.selected{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+    .seg{display:grid;grid-template-columns:1fr 1fr;gap:7px}.seg button{border:1px solid var(--line);background:white;border-radius:12px;padding:12px;color:var(--muted);font-weight:650}.seg button.selected{border-color:#e9b8ca;background:var(--green-soft);color:var(--green)}
     .modal-actions{display:flex;gap:9px;margin-top:20px}.modal-actions button{flex:1;min-height:46px}.secondary{border:1px solid var(--line);background:white;border-radius:12px;color:var(--ink);font-weight:650}
     .manage-row{display:flex;gap:8px;margin-top:12px}.manage-row input{flex:1;min-width:0}.small{font-size:12px;color:var(--muted);line-height:1.45}
     .toast{position:fixed;z-index:10;bottom:calc(86px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--ink);color:white;padding:10px 15px;border-radius:99px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
@@ -143,7 +143,7 @@ function renderTasks(list){
  $('taskList').innerHTML=list.map(t=>`<article class="task" data-id="${t.id}">
   <button class="check ${t.done?'done':''}" data-action="toggle" aria-label="${t.done?'Restore':'Complete'} task">${t.done?'✓':''}</button>
   <div><div class="task-title" style="${t.done?'text-decoration:line-through;color:#898b83':''}">${esc(t.title)}</div><div class="task-meta"><span class="tag">${esc(t.category||'Uncategorised')}</span><span class="tag ${t.priority}">${t.priority[0].toUpperCase()+t.priority.slice(1)}</span>${t.due?`<span class="due ${isOverdue(t.due)&&!t.done?'overdue':''}">${isOverdue(t.due)&&!t.done?'Overdue · ':''}${dateLabel(t.due)}</span>`:''}</div></div>
-  <div class="task-actions"><button class="icon-btn" data-action="edit" aria-label="Edit task">···</button></div>
+  <div class="task-actions"><button class="icon-btn" data-action="menu" aria-label="Task options" aria-expanded="false">···</button><div class="task-menu" hidden><button type="button" data-action="edit">Edit</button><button type="button" class="delete" data-action="delete">Delete</button></div></div>
  </article>`).join('');
 }
 function openTask(task=null,kind=view){
@@ -166,7 +166,8 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{vie
 $('mustSummary').addEventListener('click',()=>{view='must';page='tasks';filter='All';render()});
 $('wantSummary').addEventListener('click',()=>{view='want';page='tasks';filter='All';render()});
 $('filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(b){filter=b.dataset.filter;render()}});
-$('taskList').addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b)return;const card=b.closest('[data-id]');const t=state.tasks.find(x=>x.id===card.dataset.id);if(!t)return;if(b.dataset.action==='toggle'){t.done=!t.done;t.completedAt=t.done?Date.now():null;save();render();toast(t.done?'Nice work ✓':'Moved back to active')}else if(b.dataset.action==='edit'){const choice=confirm('Choose OK to edit this task, or Cancel to delete it.');if(choice)openTask(t);else if(confirm('Delete this task permanently?')){state.tasks=state.tasks.filter(x=>x.id!==t.id);save();render();toast('Task deleted')}}});
+$('taskList').addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b)return;const card=b.closest('[data-id]');const t=state.tasks.find(x=>x.id===card?.dataset.id);if(!t)return;if(b.dataset.action==='toggle'){t.done=!t.done;t.completedAt=t.done?Date.now():null;save();render();toast(t.done?'Nice work ✓':'Moved back to active')}else if(b.dataset.action==='menu'){const menu=b.parentElement.querySelector('.task-menu');const wasOpen=!menu.hidden;document.querySelectorAll('.task-menu').forEach(m=>m.hidden=true);document.querySelectorAll('[data-action="menu"]').forEach(x=>x.setAttribute('aria-expanded','false'));menu.hidden=wasOpen;b.setAttribute('aria-expanded',String(!wasOpen));}else if(b.dataset.action==='edit'){document.querySelectorAll('.task-menu').forEach(m=>m.hidden=true);openTask(t)}else if(b.dataset.action==='delete'){state.tasks=state.tasks.filter(x=>x.id!==t.id);save();render();toast('Task deleted')}});
+document.addEventListener('click',e=>{if(!e.target.closest('.task-actions')){document.querySelectorAll('.task-menu').forEach(m=>m.hidden=true);document.querySelectorAll('[data-action="menu"]').forEach(x=>x.setAttribute('aria-expanded','false'))}});
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>{page=b.dataset.page;if(page==='categories'){$('categoryDialog').showModal()}if(page==='backup'){$('backupDialog').showModal()}render()}));
 $('closeCategories').addEventListener('click',()=>$('categoryDialog').close());
 $('closeBackup').addEventListener('click',()=>$('backupDialog').close());

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f6f2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Pocket Tasks">
+  <meta name="description" content="A calm, simple place to capture what you need and want to do.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Pocket Tasks</title>
+  <style>
+    :root{--bg:#f7f6f2;--paper:#fff;--ink:#242720;--muted:#777b70;--line:#e9e8e1;--green:#466b57;--green-soft:#e8f0e9;--red:#a35e55;--red-soft:#f6eae7;--gold:#9b783e;--gold-soft:#f5efdf;--shadow:0 8px 24px rgba(35,39,32,.06)}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px}
+    button,input,select{font:inherit} button{cursor:pointer}
+    .app{max-width:720px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top)) 18px calc(92px + env(safe-area-inset-bottom))}
+    header{display:flex;justify-content:space-between;align-items:center;margin:8px 0 24px}
+    .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+    h1{font-size:29px;letter-spacing:-.04em;margin:5px 0 0;font-weight:750}
+    .date{font-size:13px;color:var(--muted);text-align:right}
+    .summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+    .summary-card{border:1px solid var(--line);background:var(--paper);border-radius:18px;padding:15px;box-shadow:var(--shadow);text-align:left}
+    .summary-card span{display:block;color:var(--muted);font-size:13px;margin-bottom:7px}
+    .summary-card strong{font-size:28px;letter-spacing:-.04em}
+    .summary-card.must strong{color:var(--red)}.summary-card.want strong{color:var(--green)}
+    .capture{display:flex;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:8px 8px 8px 15px;margin-bottom:22px;box-shadow:var(--shadow)}
+    .capture input{border:0;outline:0;min-width:0;flex:1;background:transparent;font-size:16px}
+    .capture button,.primary{border:0;background:var(--ink);color:white;border-radius:12px;padding:11px 17px;font-weight:650}
+    .tabs{display:flex;background:#eeede7;border-radius:14px;padding:4px;gap:4px;margin-bottom:16px}
+    .tab{flex:1;border:0;background:transparent;border-radius:11px;padding:12px 8px;color:var(--muted);font-weight:650}
+    .tab[aria-selected=true]{background:white;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .section-head{display:flex;justify-content:space-between;align-items:center;margin:18px 0 12px}
+    h2{font-size:20px;letter-spacing:-.03em;margin:0}
+    .count{font-size:13px;color:var(--muted)}
+    .filters{display:flex;gap:8px;overflow-x:auto;padding:1px 0 12px;scrollbar-width:none}
+    .filters::-webkit-scrollbar{display:none}
+    .chip{white-space:nowrap;border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:99px;padding:8px 12px;font-size:13px}
+    .chip.active{background:var(--green-soft);border-color:#cbd9ce;color:var(--green);font-weight:650}
+    .task-list{display:grid;gap:9px}
+    .task{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:13px;display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:start;box-shadow:0 3px 12px rgba(35,39,32,.035)}
+    .check{width:22px;height:22px;border:1.5px solid #c9c9bf;border-radius:50%;background:white;margin-top:2px;display:grid;place-items:center;color:white;padding:0}
+    .check.done{background:var(--green);border-color:var(--green)}
+    .task-title{font-weight:620;line-height:1.35;overflow-wrap:anywhere}
+    .task-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;align-items:center}
+    .tag{font-size:11px;border-radius:99px;padding:4px 8px;background:#f1f0eb;color:#686b61}
+    .tag.high{background:var(--red-soft);color:var(--red)}.tag.medium{background:var(--gold-soft);color:var(--gold)}.tag.low{background:#edf0f1;color:#65747a}
+    .due{font-size:11px;color:var(--muted)}.due.overdue{color:var(--red);font-weight:650}
+    .task-actions{display:flex;gap:2px}
+    .icon-btn{border:0;background:transparent;color:#8b8d84;font-size:18px;padding:4px 6px;border-radius:8px;min-width:32px;min-height:32px}
+    .icon-btn:active{background:#f1f0eb}
+    .empty{padding:30px 18px;text-align:center;border:1px dashed #d8d7cf;border-radius:16px;color:var(--muted);line-height:1.5}
+    .empty strong{display:block;color:var(--ink);margin-bottom:5px}
+    .bottom{position:fixed;z-index:5;bottom:0;left:0;right:0;padding:10px 18px calc(10px + env(safe-area-inset-bottom));background:rgba(247,246,242,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+    .bottom-inner{max-width:680px;margin:auto;display:flex;justify-content:space-around;align-items:center}
+    .nav{border:0;background:transparent;color:var(--muted);padding:7px 14px;border-radius:12px;font-size:12px;display:grid;gap:3px;justify-items:center}
+    .nav b{font-size:19px;font-weight:500}.nav.active{color:var(--green);background:var(--green-soft);font-weight:700}
+    .add-fab{border:0;background:var(--ink);color:white;border-radius:50%;width:50px;height:50px;font-size:28px;line-height:1;box-shadow:var(--shadow);margin-top:-23px}
+    dialog{border:0;border-radius:22px;padding:0;width:min(92vw,480px);max-height:88vh;box-shadow:0 20px 70px rgba(0,0,0,.22);color:var(--ink)}
+    dialog::backdrop{background:rgba(26,29,25,.35);backdrop-filter:blur(3px)}
+    .modal{padding:22px;overflow:auto}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal h2{font-size:22px}
+    .field{display:grid;gap:7px;margin:14px 0}.field label{font-size:13px;font-weight:650;color:#5e6258}
+    .field input,.field select{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fbfbf9;color:var(--ink);min-height:46px}
+    .seg{display:grid;grid-template-columns:1fr 1fr;gap:7px}.seg button{border:1px solid var(--line);background:white;border-radius:12px;padding:12px;color:var(--muted);font-weight:650}.seg button.selected{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+    .modal-actions{display:flex;gap:9px;margin-top:20px}.modal-actions button{flex:1;min-height:46px}.secondary{border:1px solid var(--line);background:white;border-radius:12px;color:var(--ink);font-weight:650}
+    .manage-row{display:flex;gap:8px;margin-top:12px}.manage-row input{flex:1;min-width:0}.small{font-size:12px;color:var(--muted);line-height:1.45}
+    .toast{position:fixed;z-index:10;bottom:calc(86px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--ink);color:white;padding:10px 15px;border-radius:99px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
+    @media(min-width:600px){.app{padding-left:28px;padding-right:28px}.task{padding:15px}.summary-card{padding:18px}}
+  </style>
+</head>
+<body>
+<main class="app" id="app">
+  <header><div><div class="eyebrow">A little space for your thoughts</div><h1 id="greeting">Your task space</h1></div><div class="date" id="today"></div></header>
+  <section class="summary" aria-label="Task overview">
+    <button class="summary-card must" id="mustSummary"><span>Must do</span><strong id="mustCount">0</strong></button>
+    <button class="summary-card want" id="wantSummary"><span>Want to do</span><strong id="wantCount">0</strong></button>
+  </section>
+  <form class="capture" id="quickForm"><input id="quickInput" maxlength="180" aria-label="Quick capture task" placeholder="Something on your mind?"><button type="submit">Add</button></form>
+  <nav class="tabs" aria-label="Task type"><button class="tab" data-view="must" aria-selected="true">Must do</button><button class="tab" data-view="want" aria-selected="false">Want to do</button></nav>
+  <div class="section-head"><h2 id="listTitle">Must do</h2><span class="count" id="listCount">0 tasks</span></div>
+  <div class="filters" id="filters" aria-label="Filter by category"></div>
+  <section class="task-list" id="taskList" aria-live="polite"></section>
+</main>
+<nav class="bottom" aria-label="Main navigation"><div class="bottom-inner">
+  <button class="nav active" data-page="tasks"><b>⌂</b>Tasks</button>
+  <button class="nav" data-page="completed"><b>✓</b>Completed</button>
+  <button class="add-fab" id="fab" aria-label="Add a task">+</button>
+  <button class="nav" data-page="categories"><b>☷</b>Categories</button>
+  <button class="nav" data-page="backup"><b>⇧</b>Backup</button>
+</div></nav>
+<dialog id="taskDialog"><form class="modal" id="taskForm">
+  <div class="modal-head"><h2 id="formHeading">New task</h2><button type="button" class="icon-btn" id="closeTask" aria-label="Close">✕</button></div>
+  <div class="field"><label for="taskName">What's on your mind?</label><input id="taskName" maxlength="180" required placeholder="e.g. Book dentist appointment"></div>
+  <div class="field"><label>List</label><div class="seg"><button type="button" data-kind="must" class="selected">Must do</button><button type="button" data-kind="want">Want to do</button></div></div>
+  <div class="field"><label for="taskCategory">Category</label><select id="taskCategory"></select></div>
+  <div class="field"><label for="taskPriority">Priority</label><select id="taskPriority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></div>
+  <div class="field"><label for="taskDate">Due date <span class="small">(optional)</span></label><input id="taskDate" type="date"></div>
+  <div class="modal-actions"><button type="button" class="secondary" id="cancelTask">Cancel</button><button type="submit" class="primary">Save task</button></div>
+</form></dialog>
+<dialog id="categoryDialog"><div class="modal"><div class="modal-head"><h2>Manage categories</h2><button class="icon-btn" id="closeCategories" aria-label="Close">✕</button></div><p class="small">Add categories that match the different parts of your life. You can rename or remove custom categories.</p><div id="categoryRows"></div><form id="addCategory" class="manage-row"><input id="newCategory" maxlength="30" placeholder="New category" aria-label="New category name"><button class="primary" type="submit">Add</button></form><p class="small">Default categories can be renamed or removed too. Tasks in a removed category become uncategorised.</p></div></dialog>
+<dialog id="backupDialog"><div class="modal"><div class="modal-head"><h2>Your data</h2><button class="icon-btn" id="closeBackup" aria-label="Close">✕</button></div><p>Tasks are saved on this device in this browser. Export a backup regularly if you want to keep a copy or move your tasks to another device.</p><div class="modal-actions"><button class="secondary" id="exportBtn">Export backup</button><button class="secondary" id="importBtn">Import backup</button></div><input id="importFile" type="file" accept="application/json" hidden><p class="small">This first version does not sync between devices. Importing a backup replaces the tasks and categories currently on this device.</p></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(()=>{
+const KEY='pocketTasks.v1';
+const defaults=['Work','Social','Life Admin','Health & Fitness','Shopping','Travel','Personal Growth','Ideas'];
+let state={tasks:[],categories:defaults.slice()};
+let view='must',page='tasks',filter='All',editing=null,selectedKind='must';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){toast('Could not save on this device. Export a backup.')}};
+const load=()=>{try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&Array.isArray(x.tasks)&&Array.isArray(x.categories))state=x}catch(e){}};
+function toast(s){$('toast').textContent=s;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1900)}
+function dateLabel(d){if(!d)return '';const x=new Date(d+'T12:00:00');return x.toLocaleDateString(undefined,{day:'numeric',month:'short',year:x.getFullYear()!==new Date().getFullYear()?'numeric':undefined})}
+function isOverdue(d){return d&&d<new Date().toISOString().slice(0,10)}
+function render(){
+  const active=state.tasks.filter(t=>!t.done);
+  $('mustCount').textContent=active.filter(t=>t.kind==='must').length;
+  $('wantCount').textContent=active.filter(t=>t.kind==='want').length;
+  $('today').textContent=new Date().toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
+  $('greeting').textContent='Your task space';
+  document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.view===view)));
+  document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+  if(page==='categories'){ $('listTitle').textContent='Your categories';$('listCount').textContent=state.categories.length+' categories';$('filters').innerHTML='';$('taskList').innerHTML='<div class="empty"><strong>Make this space yours</strong>Use the Categories button below to add, rename or remove categories.</div>';return}
+  if(page==='backup'){ $('listTitle').textContent='Your data';$('listCount').textContent='';$('filters').innerHTML='';$('taskList').innerHTML='<div class="empty"><strong>Your tasks stay on this device</strong>Open Backup below to export a copy or import one.</div>';return}
+  if(page==='completed'){
+    $('listTitle').textContent='Completed';$('listCount').textContent=state.tasks.filter(t=>t.done).length+' completed';
+    $('filters').innerHTML='';
+    renderTasks(state.tasks.filter(t=>t.done));return;
+  }
+  $('listTitle').textContent=view==='must'?'Must do':'Want to do';
+  let list=active.filter(t=>t.kind===view);
+  $('listCount').textContent=list.length+' '+(list.length===1?'task':'tasks');
+  $('filters').innerHTML=['All',...state.categories].map(c=>`<button class="chip ${filter===c?'active':''}" data-filter="${esc(c)}">${esc(c)}</button>`).join('');
+  if(filter!=='All')list=list.filter(t=>t.category===filter);
+  const rank={high:0,medium:1,low:2};
+  list.sort((a,b)=>rank[a.priority]-rank[b.priority]||(a.due||'9999').localeCompare(b.due||'9999')||b.created-a.created);
+  renderTasks(list);
+}
+function renderTasks(list){
+ if(!list.length){$('taskList').innerHTML=`<div class="empty"><strong>${page==='completed'?'Nothing completed just yet':'Nothing here right now'}</strong>${page==='completed'?'Finished tasks will appear here.':'Capture a thought above, or tap + to add a task.'}</div>`;return}
+ $('taskList').innerHTML=list.map(t=>`<article class="task" data-id="${t.id}">
+  <button class="check ${t.done?'done':''}" data-action="toggle" aria-label="${t.done?'Restore':'Complete'} task">${t.done?'✓':''}</button>
+  <div><div class="task-title" style="${t.done?'text-decoration:line-through;color:#898b83':''}">${esc(t.title)}</div><div class="task-meta"><span class="tag">${esc(t.category||'Uncategorised')}</span><span class="tag ${t.priority}">${t.priority[0].toUpperCase()+t.priority.slice(1)}</span>${t.due?`<span class="due ${isOverdue(t.due)&&!t.done?'overdue':''}">${isOverdue(t.due)&&!t.done?'Overdue · ':''}${dateLabel(t.due)}</span>`:''}</div></div>
+  <div class="task-actions"><button class="icon-btn" data-action="edit" aria-label="Edit task">···</button></div>
+ </article>`).join('');
+}
+function openTask(task=null,kind=view){
+ editing=task?task.id:null;selectedKind=task?task.kind:kind;
+ $('formHeading').textContent=task?'Edit task':'New task';
+ $('taskName').value=task?task.title:'';
+ $('taskPriority').value=task?task.priority:'medium';
+ $('taskDate').value=task?task.due||'':'';
+ $('taskCategory').innerHTML='<option value="">Uncategorised</option>'+state.categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+ $('taskCategory').value=task?task.category||'':'';
+ document.querySelectorAll('[data-kind]').forEach(b=>b.classList.toggle('selected',b.dataset.kind===selectedKind));
+ $('taskDialog').showModal();setTimeout(()=>$('taskName').focus(),80);
+}
+document.querySelectorAll('[data-kind]').forEach(b=>b.addEventListener('click',()=>{selectedKind=b.dataset.kind;document.querySelectorAll('[data-kind]').forEach(x=>x.classList.toggle('selected',x===b))}));
+$('taskForm').addEventListener('submit',e=>{e.preventDefault();const title=$('taskName').value.trim();if(!title)return;const data={title,kind:selectedKind,category:$('taskCategory').value,priority:$('taskPriority').value,due:$('taskDate').value||'',updated:Date.now()};if(editing){Object.assign(state.tasks.find(t=>t.id===editing),data)}else state.tasks.push({...data,id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),done:false,created:Date.now()});save();$('taskDialog').close();render();toast(editing?'Task updated':'Task captured')});
+['closeTask','cancelTask'].forEach(id=>$(id).addEventListener('click',()=>$('taskDialog').close()));
+$('quickForm').addEventListener('submit',e=>{e.preventDefault();const v=$('quickInput').value.trim();if(!v)return;state.tasks.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),title:v,kind:view,category:'',priority:'medium',due:'',done:false,created:Date.now()});$('quickInput').value='';save();render();toast('Added to '+(view==='must'?'Must do':'Want to do'))});
+$('fab').addEventListener('click',()=>openTask());
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{view=b.dataset.view;page='tasks';filter='All';render()}));
+$('mustSummary').addEventListener('click',()=>{view='must';page='tasks';filter='All';render()});
+$('wantSummary').addEventListener('click',()=>{view='want';page='tasks';filter='All';render()});
+$('filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(b){filter=b.dataset.filter;render()}});
+$('taskList').addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b)return;const card=b.closest('[data-id]');const t=state.tasks.find(x=>x.id===card.dataset.id);if(!t)return;if(b.dataset.action==='toggle'){t.done=!t.done;t.completedAt=t.done?Date.now():null;save();render();toast(t.done?'Nice work ✓':'Moved back to active')}else if(b.dataset.action==='edit'){const choice=confirm('Choose OK to edit this task, or Cancel to delete it.');if(choice)openTask(t);else if(confirm('Delete this task permanently?')){state.tasks=state.tasks.filter(x=>x.id!==t.id);save();render();toast('Task deleted')}}});
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>{page=b.dataset.page;if(page==='categories'){$('categoryDialog').showModal()}if(page==='backup'){$('backupDialog').showModal()}render()}));
+$('closeCategories').addEventListener('click',()=>$('categoryDialog').close());
+$('closeBackup').addEventListener('click',()=>$('backupDialog').close());
+function renderCategories(){$('categoryRows').innerHTML=state.categories.map((c,i)=>`<div class="manage-row"><input aria-label="Category name" data-cat="${i}" value="${esc(c)}" maxlength="30"><button class="secondary" data-rename="${i}">Save</button><button class="icon-btn" data-remove="${i}" aria-label="Remove ${esc(c)}">✕</button></div>`).join('')}
+$('categoryRows').addEventListener('click',e=>{const r=e.target.closest('[data-rename]');const d=e.target.closest('[data-remove]');if(r){const i=+r.dataset.rename,v=$('categoryRows').querySelector(`[data-cat="${i}"]`).value.trim();if(!v)return toast('Enter a category name');if(state.categories.some((x,j)=>x.toLowerCase()===v.toLowerCase()&&j!==i))return toast('That category already exists');const old=state.categories[i];state.categories[i]=v;state.tasks.forEach(t=>{if(t.category===old)t.category=v});save();renderCategories();render();toast('Category renamed')}if(d){const i=+d.dataset.remove,old=state.categories[i];if(!confirm(`Remove "${old}"? Tasks will become uncategorised.`))return;state.categories.splice(i,1);state.tasks.forEach(t=>{if(t.category===old)t.category=''});if(filter===old)filter='All';save();renderCategories();render();toast('Category removed')}});
+$('addCategory').addEventListener('submit',e=>{e.preventDefault();const v=$('newCategory').value.trim();if(!v)return;if(state.categories.some(x=>x.toLowerCase()===v.toLowerCase()))return toast('Category already exists');state.categories.push(v);$('newCategory').value='';save();renderCategories();render();toast('Category added')});
+$('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='pocket-tasks-backup.json';a.click();URL.revokeObjectURL(url)});
+$('importBtn').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());if(!Array.isArray(x.tasks)||!Array.isArray(x.categories))throw Error();if(!confirm('Replace the tasks and categories on this device with this backup?'))return;state=x;save();render();toast('Backup imported')}catch(err){toast('That backup file is not valid')}e.target.value=''});
+load();render();renderCategories();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>
